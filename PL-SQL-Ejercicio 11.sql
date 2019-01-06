@@ -1,0 +1,27 @@
+DECLARE
+nivel INT:=0;
+PROMEDIO_INCORRECTO EXCEPTION;
+CURSOR cAlumno IS
+SELECT *
+FROM Alumno;
+BEGIN
+FOR rAlumno IN cAlumno LOOP
+    CASE
+        WHEN RALUMNO.PROMEDIO  >=1  AND RALUMNO.PROMEDIO <= 4 THEN nivel := 1;
+        WHEN RALUMNO.PROMEDIO > 4 AND RALUMNO.PROMEDIO <= 8 THEN nivel := 2;
+        WHEN RALUMNO.PROMEDIO >= 9 THEN nivel := 3;
+        ELSE 
+        RAISE PROMEDIO_INCORRECTO;
+    END CASE;
+DBMS_OUTPUT.PUT_LINE('Alumno: ' || RALUMNO.Legajo || ' Nivel: ' || nivel); 
+    
+END LOOP;
+COMMIT;
+EXCEPTION
+    WHEN PROMEDIO_INCORRECTO THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('ERROR: Promedio fuera del rango ');
+    WHEN OTHERS THEN
+            ROLLBACK;
+            DBMS_OUTPUT.PUT_LINE('ERROR: ' || SQLERRM);
+END;
